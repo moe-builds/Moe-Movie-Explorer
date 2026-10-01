@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors */
+  --color-brand-red: #e50914;
+  --color-brand-purple: #6366f1;
+  --color-brand-cyan: #06b6d4;
+  --color-brand-dark: #0f172a;
+  --color-brand-card: #1e293b;
+  --color-brand-light-bg: #f8fafc;
+  --color-brand-light-card: #ffffff;
+
+  /* Font Family */
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+}
+
+/* Dark Mode Configuration */
+@variant dark (&:where(.dark, .dark *));
+
+body {
+  /* bg-slate-950 */
+  background-color: #020617;
+
+  /* text-slate-100 */
+  color: #f1f5f9;
+
+  /* min-h-screen */
+  min-height: 100vh;
+
+  /* flex flex-col */
+  display: flex;
+  flex-direction: column;
+
+  /* antialiased */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* selection:bg-brand-purple selection:text-white */
+body ::selection {
+  background-color: #6366f1; /* Replace with your specific 'brand-purple' hex code */
+  color: #ffffff;
+}
+
+.glass-panel {
+  background: rgba(30, 41, 59, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}

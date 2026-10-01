@@ -1,7 +1,18 @@
+import { Routes, Route } from "react-router-dom";
+import { Home } from "./Home";
+
 import "./App.css";
+import { MediaDetail } from "./components/Modals/MediaDetail";
 
 function App() {
-  return "hi";
+  return (
+    <>
+      <Routes>
+        <Route index element={<Home />} />
+        <Route path="/movie/:id" element={<MediaDetail />} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;
