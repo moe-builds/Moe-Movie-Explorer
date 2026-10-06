@@ -198,6 +198,8 @@ export function DataProvider({ children }: MyComponentProps) {
     },
   ];
 
+  // TODO: Request data from the backend
+
   const [items, setItems] = useState<Movie[]>(MEDIA_DATABASE);
 
   return (

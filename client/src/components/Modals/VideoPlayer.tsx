@@ -23,6 +23,7 @@ export function VideoPlayer({ src }: VideoPlayerProps) {
           <iframe
             id="trailer-iframe"
             className="w-full h-full"
+            // src={"https://youtube.com" + videoData.key}
             src={src}
             title="Trailer"
             frameBorder="0"
