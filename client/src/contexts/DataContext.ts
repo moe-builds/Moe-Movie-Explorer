@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 
 export interface Movie {
   id: string;
@@ -22,3 +22,12 @@ interface DataContextType {
   setItems: React.Dispatch<React.SetStateAction<Movie[]>>;
 }
 export const DataContext = createContext<DataContextType | null>(null);
+
+export function useDataContext() {
+  const context = useContext(DataContext);
+
+  if (!context) {
+    throw new Error("useDataContext must be used within a DataContextProvider");
+  }
+  return context;
+}

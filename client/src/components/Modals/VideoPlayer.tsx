@@ -1,6 +1,10 @@
 import { X } from "lucide-react";
 
-export function VideoPlayer() {
+interface VideoPlayerProps {
+  src: string;
+}
+
+export function VideoPlayer({ src }: VideoPlayerProps) {
   return (
     <div
       id="trailer-modal"
@@ -19,7 +23,7 @@ export function VideoPlayer() {
           <iframe
             id="trailer-iframe"
             className="w-full h-full"
-            src=""
+            src={src}
             title="Trailer"
             frameBorder="0"
             allow="

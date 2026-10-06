@@ -1,8 +1,7 @@
 import { MediaItem } from "./MediaItem";
 import { Sliders, ChevronDown, RotateCcw } from "lucide-react";
 import { NoMediaFallbackUI } from "./NoMediaFallbackUI";
-import { useContext } from "react";
-import { DataContext } from "../contexts/DataContext";
+import { useDataContext } from "../contexts/DataContext";
 
 export type mediaItem = {
   id: string;
@@ -22,7 +21,7 @@ export type mediaItem = {
 };
 
 export function MainContent() {
-  const { items, setItems } = useContext(DataContext);
+  const { items, setItems } = useDataContext();
 
   return (
     <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
