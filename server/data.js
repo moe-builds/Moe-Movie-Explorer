@@ -99,5 +99,27 @@ async function getTvVideos(id) {
     console.error("Error fetching TV Show Videos:", error.message);
   }
 }
+async function getMovieVideos(id) {
+  const url = `https://api.themoviedb.org/3/movie/${id}/videos`;
 
-module.exports = { searchMulti, getMovie, getTv, getTvVideos };
+  const options = {
+    method: "GET",
+    url,
+    params: {
+      language: "en-US",
+    },
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${readToken}`,
+    },
+  };
+
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching Movie Videos:", error.message);
+  }
+}
+
+module.exports = { searchMulti, getMovie, getTv, getTvVideos, getMovieVideos };

@@ -1,7 +1,13 @@
 require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
-const { searchMulti, getMovie, getTv, getTvVideos } = require("./data");
+const {
+  searchMulti,
+  getMovie,
+  getMovieVideos,
+  getTv,
+  getTvVideos,
+} = require("./data");
 
 const app = express();
 app.use(cors());
@@ -34,6 +40,18 @@ app.get("/api/movie/:id", async (req, res) => {
   } catch (error) {
     console.log("failed to fetch the movie", error);
     res.status(500).json({ error: "failed to fetch the movie" });
+  }
+});
+
+app.get("/api/movie/videos/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const data = await getMovieVideos(id);
+    res.json(data);
+  } catch (error) {
+    console.log("failed to fetch movie videos", error);
+    res.status(500).json({ error: "failed to fetch movie videos" });
   }
 });
 
