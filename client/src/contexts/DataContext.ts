@@ -1,25 +1,25 @@
 import { createContext, useContext } from "react";
 
-export interface Movie {
+export interface MediaItem {
   id: string;
   title: string;
   type: string;
   year: number;
-  rating: number;
+  rating?: number;
   popularity: number;
   genres: string[];
   duration: string;
-  director: string;
-  cast: string;
+  director?: string;
+  cast?: string;
   poster: string;
   backdrop: string;
   overview: string;
-  trailer: string;
+  trailer?: string;
 }
 
 interface DataContextType {
-  items: Movie[];
-  setItems: React.Dispatch<React.SetStateAction<Movie[]>>;
+  items: MediaItem[];
+  setItems: React.Dispatch<React.SetStateAction<MediaItem[]>>;
 }
 export const DataContext = createContext<DataContextType | null>(null);
 

@@ -1,4 +1,3 @@
-require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const {
@@ -7,6 +6,7 @@ const {
   getMovieVideos,
   getTv,
   getTvVideos,
+  trending,
 } = require("./data");
 
 const app = express();
@@ -25,6 +25,17 @@ app.get("/api/search/multi", async (req, res) => {
   } catch (error) {
     console.log("Faild to fetch data");
     res.status(500).json({ error: "Failed to fetch data" });
+  }
+});
+
+// Trending
+app.get("/api/trending", async (req, res) => {
+  try {
+    const data = await trending();
+    res.json(data);
+  } catch (error) {
+    console.log("Error loading trending", error);
+    res.status(500).json({ error });
   }
 });
 

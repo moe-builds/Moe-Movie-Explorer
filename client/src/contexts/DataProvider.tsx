@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { DataContext, type Movie } from "./DataContext";
+import { DataContext, type MediaItem } from "./DataContext";
 
 interface MyComponentProps {
   children: ReactNode;
@@ -200,7 +200,7 @@ export function DataProvider({ children }: MyComponentProps) {
 
   // TODO: Request data from the backend
 
-  const [items, setItems] = useState<Movie[]>(MEDIA_DATABASE);
+  const [items, setItems] = useState<MediaItem[]>(MEDIA_DATABASE);
 
   return (
     <DataContext.Provider value={{ items, setItems }}>
