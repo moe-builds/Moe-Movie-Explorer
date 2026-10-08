@@ -70,7 +70,10 @@ export function MediaDetail() {
           <div className="absolute inset-0 flex items-center justify-center">
             <button
               id="play-trailer-btn"
-              className="group flex items-center gap-3 px-6 py-3 rounded-2xl bg-indigo-600/90 hover:bg-indigo-600 text-white font-bold text-sm shadow-2xl shadow-indigo-600/50 backdrop-blur-md transform transition-all hover:scale-105 border border-indigo-400/30"
+              className="group flex items-center gap-3 px-6 py-3 rounded-2xl bg-indigo-600/90 hover:bg-indigo-600 text-white font-bold text-sm shadow-2xl shadow-indigo-600/50 backdrop-blur-md transform transition-all hover:scale-105 border border-indigo-400/30 cursor-pointer"
+              onClick={() => {
+                navigate(`/video/${type}/${id}`);
+              }}
             >
               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Play className="text-white ml-0.5" />

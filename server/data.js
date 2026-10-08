@@ -311,7 +311,7 @@ async function getTvVideos(id) {
 
   try {
     const response = await axios(options);
-    return response.data;
+    return response.data.results.filter((item) => item.type === "Trailer")[0];
   } catch (error) {
     console.error("Error fetching TV Show Videos:", error.message);
   }
@@ -333,7 +333,7 @@ async function getMovieVideos(id) {
 
   try {
     const response = await axios(options);
-    return response.data;
+    return response.data.results.filter((item) => item.type === "Trailer")[0];
   } catch (error) {
     console.error("Error fetching Movie Videos:", error.message);
   }

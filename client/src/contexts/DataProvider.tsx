@@ -59,6 +59,24 @@ export function DataProvider({ children }: MyComponentProps) {
     }
   }, []);
 
+  const fetchMovieTrailer = async (id: number) => {
+    try {
+      const res = await axios.get(`/api/movie/videos/${id}`);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchTvTrailer = async (id: number) => {
+    try {
+      const res = await axios.get(`/api/tv/videos/${id}`);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === "movies") {
       fetchMovies();
@@ -83,6 +101,8 @@ export function DataProvider({ children }: MyComponentProps) {
         fetchTvShow,
         fetchTvCredits,
         fetchMovieCredits,
+        fetchMovieTrailer,
+        fetchTvTrailer,
       }}
     >
       {children}

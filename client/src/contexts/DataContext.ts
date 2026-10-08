@@ -70,6 +70,8 @@ interface DataContextType {
       name: string;
     }[]
   >;
+  fetchMovieTrailer: (id: number) => Promise<any>;
+  fetchTvTrailer: (id: number) => Promise<any>;
 }
 export const DataContext = createContext<DataContextType | null>(null);
 
