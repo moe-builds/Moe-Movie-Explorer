@@ -10,6 +10,8 @@ const {
   topRated,
   movies,
   tvShows,
+  tvCredits,
+  movieCredits,
 } = require("./data");
 
 const app = express();
@@ -77,6 +79,18 @@ app.get("/api/movie/:id", async (req, res) => {
   }
 });
 
+// credits
+app.get("/api/movie/credits/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const data = await movieCredits(id);
+    res.json(data);
+  } catch (error) {
+    console.log("failed to fetch videos", error);
+    res.status(500).json({ error: "failed to fetch videos" });
+  }
+});
+
 // Get the videos that belong to a movie.
 app.get("/api/movie/videos/:id", async (req, res) => {
   const { id } = req.params;
@@ -121,6 +135,17 @@ app.get("/api/tv/videos/:id", async (req, res) => {
 
   try {
     const data = await getTvVideos(id);
+    res.json(data);
+  } catch (error) {
+    console.log("failed to fetch videos", error);
+    res.status(500).json({ error: "failed to fetch videos" });
+  }
+});
+
+app.get("/api/tv/credits/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const data = await tvCredits(id);
     res.json(data);
   } catch (error) {
     console.log("failed to fetch videos", error);

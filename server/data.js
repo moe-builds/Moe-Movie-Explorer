@@ -227,6 +227,73 @@ async function getTv(id) {
   }
 }
 
+async function tvCredits(id) {
+  const url = `https://api.themoviedb.org/3/tv/${id}/credits`;
+
+  const options = {
+    method: "GET",
+    url,
+    params: {
+      language: "en-US",
+    },
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${readToken}`,
+    },
+  };
+  try {
+    const response = await axios(options);
+
+    return [
+      ...response.data.cast.map((person) => ({
+        id: person.id,
+        known_for_department: person.known_for_department,
+        name: person.name,
+      })),
+      ...response.data.crew.map((person) => ({
+        id: person.id,
+        known_for_department: person.known_for_department,
+        name: person.name,
+      })),
+    ];
+  } catch (error) {
+    console.error("Error fetching data:", error.message);
+  }
+}
+async function movieCredits(id) {
+  const url = `https://api.themoviedb.org/3/movie/${id}/credits`;
+
+  const options = {
+    method: "GET",
+    url,
+    params: {
+      language: "en-US",
+    },
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${readToken}`,
+    },
+  };
+  try {
+    const response = await axios(options);
+
+    return [
+      ...response.data.cast.map((person) => ({
+        id: person.id,
+        known_for_department: person.known_for_department,
+        name: person.name,
+      })),
+      ...response.data.crew.map((person) => ({
+        id: person.id,
+        known_for_department: person.known_for_department,
+        name: person.name,
+      })),
+    ];
+  } catch (error) {
+    console.error("Error fetching data:", error.message);
+  }
+}
+
 async function getTvVideos(id) {
   const url = `https://api.themoviedb.org/3/tv/${id}/videos`;
 
@@ -282,4 +349,6 @@ module.exports = {
   topRated,
   movies,
   tvShows,
+  tvCredits,
+  movieCredits,
 };

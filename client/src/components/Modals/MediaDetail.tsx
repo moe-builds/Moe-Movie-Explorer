@@ -8,20 +8,30 @@ export function MediaDetail() {
   const navigate = useNavigate();
   const { type, id } = useParams();
 
-  const { fetchMovie, fetchTvShow } = useDataContext();
+  const { fetchMovie, fetchTvShow, fetchTvCredits, fetchMovieCredits } =
+    useDataContext();
 
   const [media, setMedia] = useState<mediaItem | null>(null);
+  const [castCrew, setCastCrew] = useState<
+    {
+      id: number;
+      known_for_department: string;
+      name: string;
+    }[]
+  >([]);
 
   useEffect(() => {
     async function loadData() {
       if (type === "tv") {
         setMedia(await fetchTvShow(Number(id)));
+        setCastCrew(await fetchTvCredits(Number(id)));
       } else if (type === "movie") {
         setMedia(await fetchMovie(Number(id)));
+        setCastCrew(await fetchMovieCredits(Number(id)));
       }
     }
     loadData();
-  }, [id, type, fetchTvShow, fetchMovie]);
+  }, [id, type, fetchTvShow, fetchMovie, fetchTvCredits, fetchMovieCredits]);
 
   if (media == null) return;
 
@@ -32,7 +42,7 @@ export function MediaDetail() {
     >
       {/* Modal Content Container */}
       <div
-        className="relative w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl my-8 transform scale-95 transition-transform duration-300"
+        className="relative w-full max-w-4xl mt-30 bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl my-8 transform scale-95 transition-transform duration-300"
         id="modal-container"
       >
         {/* Modal Close Button */}
@@ -50,7 +60,7 @@ export function MediaDetail() {
           {/* Backdrop Image */}
           <img
             id="modal-backdrop"
-            src=""
+            src={`https://image.tmdb.org/t/p/w1280/${media.poster_path}`}
             alt=""
             className="w-full h-full object-cover opacity-60"
           />
@@ -144,12 +154,11 @@ export function MediaDetail() {
               id="modal-overview"
               className="text-slate-300 text-sm sm:text-base leading-relaxed"
             >
-              A team of explorers travel through a wormhole in space in an
-              attempt to ensure humanity's survival.
+              {media.overview}
             </p>
           </div>
 
-          {/* Director & Cast Grid */}
+          {/* Director & castCrew Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-slate-800">
             {/* Director / Creator Field */}
             <div>
@@ -157,16 +166,23 @@ export function MediaDetail() {
                 Director / Creator
               </h4>
               <p id="modal-director" className="text-sm font-medium text-white">
-                Christopher Nolan
+                {
+                  castCrew.find((p) => p.known_for_department === "Directing")
+                    ?.name
+                }
               </p>
             </div>
-            {/* Cast Field */}
+            {/* castCrew Field */}
             <div>
               <h4 className="text-xs uppercase tracking-wider font-extrabold text-slate-400 mb-2">
-                Top Cast
+                Top castCrew
               </h4>
-              <p id="modal-cast" className="text-sm font-medium text-white">
-                Matthew McConaughey, Anne Hathaway, Jessica Chastain
+              <p id="modal-castCrew" className="text-sm font-medium text-white">
+                {castCrew
+                  .filter((p) => p.known_for_department === "Acting")
+                  .map((p) => p.name)
+                  .slice(0, 3)
+                  .join(", ")}
               </p>
             </div>
           </div>

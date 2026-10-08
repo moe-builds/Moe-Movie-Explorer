@@ -56,6 +56,20 @@ interface DataContextType {
   fetchtvshows: () => void;
   fetchMovie: (id: number) => Promise<mediaItem>;
   fetchTvShow: (id: number) => Promise<mediaItem>;
+  fetchTvCredits: (id: number) => Promise<
+    {
+      id: number;
+      known_for_department: string;
+      name: string;
+    }[]
+  >;
+  fetchMovieCredits: (id: number) => Promise<
+    {
+      id: number;
+      known_for_department: string;
+      name: string;
+    }[]
+  >;
 }
 export const DataContext = createContext<DataContextType | null>(null);
 
