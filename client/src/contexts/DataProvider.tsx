@@ -36,6 +36,11 @@ export function DataProvider({ children }: MyComponentProps) {
     const verifiedResults = res.data as mediaItem;
     return verifiedResults;
   }, []);
+  const fetchTvShow = useCallback(async (id: number) => {
+    const res = await axios.get(`/api/tv/${id}`);
+    const verifiedResults = res.data as mediaItem;
+    return verifiedResults;
+  }, []);
 
   useEffect(() => {
     if (activeTab === "movies") {
@@ -58,6 +63,7 @@ export function DataProvider({ children }: MyComponentProps) {
         fetchMovies,
         fetchtvshows,
         fetchMovie,
+        fetchTvShow,
       }}
     >
       {children}

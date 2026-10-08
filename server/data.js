@@ -221,7 +221,7 @@ async function getTv(id) {
 
   try {
     const response = await axios(options);
-    return response.data;
+    return { ...response.data, media_type: "tv" };
   } catch (error) {
     console.error("Error fetching TV Show data:", error.message);
   }

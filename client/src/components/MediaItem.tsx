@@ -9,7 +9,7 @@ export function MediaItem({ item }: { item: mediaItem }) {
   const [isSaved, setIsSaved] = useState(false);
 
   return (
-    <Link to={`movie/${item.id}`}>
+    <Link to={`media/${item.media_type}/${item.id}`}>
       <div className="group relative bg-slate-900 rounded-2xl overflow-hidden border border-slate-800/80 hover:border-slate-700 hover:shadow-2xl hover:shadow-indigo-500/15 transition-all duration-300 flex flex-col cursor-pointer transform hover:-translate-y-1.5">
         <div className="relative aspect-[2/3] w-full overflow-hidden bg-slate-950">
           <img

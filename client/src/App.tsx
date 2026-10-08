@@ -9,7 +9,7 @@ function App() {
     <>
       <Routes>
         <Route index element={<Home />} />
-        <Route path="/movie/:id" element={<MediaDetail />} />
+        <Route path="/media/:type/:id" element={<MediaDetail />} />
       </Routes>
     </>
   );

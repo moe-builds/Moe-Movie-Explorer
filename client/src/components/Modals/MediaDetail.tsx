@@ -6,18 +6,22 @@ import dayjs from "dayjs";
 
 export function MediaDetail() {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { type, id } = useParams();
 
-  const { fetchMovie } = useDataContext();
+  const { fetchMovie, fetchTvShow } = useDataContext();
 
   const [media, setMedia] = useState<mediaItem | null>(null);
 
   useEffect(() => {
     async function loadData() {
-      setMedia(await fetchMovie(Number(id)));
+      if (type === "tv") {
+        setMedia(await fetchTvShow(Number(id)));
+      } else if (type === "movie") {
+        setMedia(await fetchMovie(Number(id)));
+      }
     }
     loadData();
-  }, [id, fetchMovie]);
+  }, [id, type, fetchTvShow, fetchMovie]);
 
   if (media == null) return;
 

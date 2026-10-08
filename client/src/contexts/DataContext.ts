@@ -54,7 +54,8 @@ interface DataContextType {
   fetchTopRated: () => void;
   fetchMovies: () => void;
   fetchtvshows: () => void;
-  fetchMovie: (id: number) => mediaItem;
+  fetchMovie: (id: number) => Promise<mediaItem>;
+  fetchTvShow: (id: number) => Promise<mediaItem>;
 }
 export const DataContext = createContext<DataContextType | null>(null);
 
