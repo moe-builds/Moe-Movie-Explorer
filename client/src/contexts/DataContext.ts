@@ -50,6 +50,9 @@ export type mediaItem = MovieItem | TVItem;
 interface DataContextType {
   items: mediaItem[];
   fetchTrending: () => void;
+  fetchTopRated: () => void;
+  fetchMovies: () => void;
+  fetchtvshows: () => void;
 }
 export const DataContext = createContext<DataContextType | null>(null);
 

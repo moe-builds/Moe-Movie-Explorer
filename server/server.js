@@ -7,6 +7,9 @@ const {
   getTv,
   getTvVideos,
   trending,
+  topRated,
+  movies,
+  tvShows,
 } = require("./data");
 
 const app = express();
@@ -38,8 +41,28 @@ app.get("/api/trending", async (req, res) => {
     res.status(500).json({ error });
   }
 });
+// Top Rated
+app.get("/api/top_rated", async (req, res) => {
+  try {
+    const data = await topRated();
+    res.json(data);
+  } catch (error) {
+    console.log("Error loading Top Rated media", error);
+    res.status(500).json({ error });
+  }
+});
 
 // Movies:
+
+app.get("/api/movies", async (req, res) => {
+  try {
+    const data = await movies();
+    res.json(data);
+  } catch (error) {
+    console.log("Error loading movies", error);
+    res.status(500).json({ error });
+  }
+});
 
 // Get the details of a Movie.
 app.get("/api/movie/:id", async (req, res) => {
@@ -67,6 +90,16 @@ app.get("/api/movie/videos/:id", async (req, res) => {
 });
 
 // TV Shows:
+
+app.get("/api/tvshows", async (req, res) => {
+  try {
+    const data = await tvShows();
+    res.json(data);
+  } catch (error) {
+    console.log("Error loading TV Shows", error);
+    res.status(500).json({ error });
+  }
+});
 
 // Get the details of a TV show.
 app.get("/api/tv/:id", async (req, res) => {

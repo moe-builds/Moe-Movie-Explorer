@@ -13,8 +13,9 @@ import { useDataContext } from "../contexts/DataContext";
 import { useState } from "react";
 
 export function Header() {
-  const { fetchTrending } = useDataContext();
-  const [activeTab, setActiveTab] = useState("trending");
+  const { fetchTrending, fetchTopRated, fetchMovies, fetchtvshows } =
+    useDataContext();
+  const [activeTab, setActiveTab] = useState("movies");
 
   const tabs = [
     { id: "movies", label: "Movies", icon: <Film className="mr-1.5" /> },
@@ -26,7 +27,7 @@ export function Header() {
     },
     {
       id: "top_rated",
-      label: "TrendTop Rated",
+      label: "Top Rated",
       icon: <Star className="mr-1.5 text-yellow-400" />,
     },
   ];
@@ -117,6 +118,12 @@ export function Header() {
                 onClick={() => {
                   if (tab.id === "trending") {
                     fetchTrending();
+                  } else if (tab.id === "top_rated") {
+                    fetchTopRated();
+                  } else if (tab.id === "movies") {
+                    fetchMovies();
+                  } else if (tab.id === "tv") {
+                    fetchtvshows();
                   }
                   setActiveTab(tab.id);
                 }}

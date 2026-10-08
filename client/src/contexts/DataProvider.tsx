@@ -19,13 +19,25 @@ export function DataProvider({ children }: MyComponentProps) {
     const verifiedResults = res.data as mediaItem[];
     setItems(verifiedResults);
   }, []);
+  const fetchMovies = useCallback(async () => {
+    const res = await axios.get("/api/movies");
+    const verifiedResults = res.data as mediaItem[];
+    setItems(verifiedResults);
+  }, []);
+  const fetchtvshows = useCallback(async () => {
+    const res = await axios.get("/api/tvshows");
+    const verifiedResults = res.data as mediaItem[];
+    setItems(verifiedResults);
+  }, []);
 
-  // useEffect(() => {
-  //   fetchTrending();
-  // }, [fetchTrending]);
+  useEffect(() => {
+    fetchMovies();
+  }, [fetchMovies]);
 
   return (
-    <DataContext.Provider value={{ items, fetchTrending }}>
+    <DataContext.Provider
+      value={{ items, fetchTrending, fetchTopRated, fetchMovies, fetchtvshows }}
+    >
       {children}
     </DataContext.Provider>
   );
