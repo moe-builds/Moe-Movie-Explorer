@@ -1,4 +1,9 @@
-import { createContext, useContext } from "react";
+import {
+  createContext,
+  useContext,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 
 // 1. Define fields that are identical across both movies and TV shows
 interface BaseMediaItem {
@@ -50,6 +55,7 @@ export type mediaItem = MovieItem | TVItem;
 
 interface DataContextType {
   items: mediaItem[];
+  setItems: Dispatch<SetStateAction<mediaItem[]>>;
   fetchTrending: () => void;
   fetchTopRated: () => void;
   fetchMovies: () => void;
@@ -70,8 +76,30 @@ interface DataContextType {
       name: string;
     }[]
   >;
-  fetchMovieTrailer: (id: number) => Promise<any>;
-  fetchTvTrailer: (id: number) => Promise<any>;
+  fetchMovieTrailer: (id: number) => Promise<{
+    iso_639_1: string;
+    iso_3166_1: string;
+    name: string;
+    key: string;
+    site: string;
+    size: number;
+    type: "Trailer";
+    official: boolean;
+    id: string;
+    published_at: string;
+  }>;
+  fetchTvTrailer: (id: number) => Promise<{
+    iso_639_1: string;
+    iso_3166_1: string;
+    name: string;
+    key: string;
+    site: string;
+    size: number;
+    type: "Trailer";
+    official: boolean;
+    id: string;
+    published_at: string;
+  }>;
 }
 export const DataContext = createContext<DataContextType | null>(null);
 

@@ -93,6 +93,7 @@ export function DataProvider({ children }: MyComponentProps) {
     <DataContext.Provider
       value={{
         items,
+        setItems,
         fetchTrending,
         fetchTopRated,
         fetchMovies,

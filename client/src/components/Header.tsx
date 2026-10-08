@@ -11,11 +11,14 @@ import {
 } from "lucide-react";
 import { useDataContext } from "../contexts/DataContext";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useWatchList } from "../contexts/WatchListContext";
 
 export function Header() {
-  const { fetchTrending, fetchTopRated, fetchMovies, fetchtvshows } =
+  const { fetchTrending, fetchTopRated, fetchMovies, fetchtvshows, setItems } =
     useDataContext();
   const [activeTab, setActiveTab] = useLocalStorage("tabs", "movies");
+
+  const { items } = useWatchList();
 
   const tabs = [
     { id: "movies", label: "Movies", icon: <Film className="mr-1.5" /> },
@@ -79,8 +82,15 @@ export function Header() {
           <div className="flex items-center gap-3">
             {/* Watchlist Tab Button */}
             <button
-              id="watchlist-tab-btn"
-              className="relative flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-sm font-semibold text-slate-300 transition-all"
+              className={`relative flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 border ${
+                activeTab === "watchList"
+                  ? "bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-600/20"
+                  : "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800 hover:border-slate-700 hover:text-white"
+              }`}
+              onClick={() => {
+                setItems(items);
+                setActiveTab("watchList");
+              }}
             >
               <Bookmark className="text-indigo-400" />
               <span className="hidden md:inline">Watchlist</span>
@@ -89,7 +99,7 @@ export function Header() {
                 id="watchlist-badge"
                 className="px-2 py-0.5 text-xs font-bold rounded-full bg-indigo-600 text-white min-w-[20px] text-center"
               >
-                0
+                {items.length}
               </span>
             </button>
 

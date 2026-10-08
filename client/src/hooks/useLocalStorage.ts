@@ -1,21 +1,30 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useState, useEffect, type Dispatch, type SetStateAction } from "react";
 
-export function useLocalStorage(
+export function useLocalStorage<T>(
   key: string,
-  defaultValue: string | (() => void),
-): [string, Dispatch<SetStateAction<string>>] {
-  const [val, setVal] = useState(() => {
+  defaultValue: T | (() => T),
+): [T, Dispatch<SetStateAction<T>>] {
+  const [val, setVal] = useState<T>(() => {
     const jsonVal = localStorage.getItem(key);
     if (jsonVal) {
-      return JSON.parse(jsonVal);
+      try {
+        return JSON.parse(jsonVal);
+      } catch {
+        // Fallback in case the stored JSON is malformed
+        return typeof defaultValue === "function"
+          ? (defaultValue as () => T)()
+          : defaultValue;
+      }
     } else {
       if (typeof defaultValue === "function") {
-        return defaultValue();
+        // 4. Safely call and cast the initializer function
+        return (defaultValue as () => T)();
       } else {
         return defaultValue;
       }
     }
   });
+
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(val));
   }, [key, val]);
