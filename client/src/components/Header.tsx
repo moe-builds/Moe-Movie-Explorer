@@ -1,7 +1,6 @@
 import {
   Search,
   Moon,
-  Grip,
   Film,
   Tv,
   Flame,
@@ -10,8 +9,28 @@ import {
   Bookmark,
   Star,
 } from "lucide-react";
+import { useDataContext } from "../contexts/DataContext";
+import { useState } from "react";
 
 export function Header() {
+  const { fetchTrending } = useDataContext();
+  const [activeTab, setActiveTab] = useState("trending");
+
+  const tabs = [
+    { id: "movies", label: "Movies", icon: <Film className="mr-1.5" /> },
+    { id: "tv", label: "TV Shows", icon: <Tv className="mr-1.5" /> },
+    {
+      id: "trending",
+      label: "Trending",
+      icon: <Flame className="mr-1.5 text-amber-500" />,
+    },
+    {
+      id: "top_rated",
+      label: "TrendTop Rated",
+      icon: <Star className="mr-1.5 text-yellow-400" />,
+    },
+  ];
+
   return (
     <header className="sticky top-0 z-40 glass-panel border-b border-slate-800/80 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -86,41 +105,27 @@ export function Header() {
 
         {/* Primary Category Navigation Tabs */}
         <nav className="flex space-x-1 sm:space-x-2 border-t border-slate-800/50 py-3 overflow-x-auto no-scrollbar">
-          {/* All Explorer Tab */}
-          <button
-            data-tab="all"
-            className="nav-tab flex items-center active px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-          >
-            <Grip className="mr-1.5" /> All Explorer
-          </button>
-          {/* Movies Tab */}
-          <button
-            data-tab="movie"
-            className="nav-tab flex items-center px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all whitespace-nowrap"
-          >
-            <Film className="mr-1.5" /> Movies
-          </button>
-          {/* TV Shows Tab */}
-          <button
-            data-tab="tv"
-            className="nav-tab flex items-center px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all whitespace-nowrap"
-          >
-            <Tv className="mr-1.5" /> TV Shows
-          </button>
-          {/* Trending Tab */}
-          <button
-            data-tab="trending"
-            className="nav-tab flex items-center px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all whitespace-nowrap"
-          >
-            <Flame className="mr-1.5 text-amber-500" /> Trending
-          </button>
-          {/* Top Rated Tab */}
-          <button
-            data-tab="top_rated"
-            className="nav-tab flex items-center px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all whitespace-nowrap"
-          >
-            <Star className="mr-1.5 text-yellow-400" /> Top Rated
-          </button>
+          {tabs.map((tab) => {
+            return (
+              <button
+                key={tab.id}
+                className={`nav-tab flex items-center px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
+                  tab.id === activeTab
+                    ? "active bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800/80"
+                }`}
+                onClick={() => {
+                  if (tab.id === "trending") {
+                    fetchTrending();
+                  }
+                  setActiveTab(tab.id);
+                }}
+              >
+                {tab.icon}
+                {tab.label}
+              </button>
+            );
+          })}
         </nav>
       </div>
     </header>

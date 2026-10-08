@@ -78,19 +78,7 @@ async function getMovie(id) {
   try {
     const response = await axios(options);
 
-    return {
-      id: response.data.id,
-      adult: response.data.adult,
-      backdrop: response.data.backdrop_path,
-      type: "movie",
-      genres: response.data.genres.map((g) => g.name),
-      overview: response.data.overview,
-      popularity: response.data.popularity,
-      poster: response.data.poster_path,
-      year: Number(dayjs(response.data.release_date).format("YYYY")),
-      duration: response.data.runtime,
-      title: response.data.title,
-    };
+    return response.data;
   } catch (error) {
     console.error("Error fetching movie data:", error.message);
   }
