@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import axios from "axios";
 import { DataContext, type mediaItem } from "./DataContext";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface MyComponentProps {
   children: ReactNode;
 }
 export function DataProvider({ children }: MyComponentProps) {
-  // TODO: Request data from the backend
   const [items, setItems] = useState<mediaItem[]>([]);
+  const [activeTab, setActiveTab] = useLocalStorage("tabs", "movies");
 
   const fetchTrending = useCallback(async () => {
     const res = await axios.get("/api/trending");
@@ -30,13 +31,34 @@ export function DataProvider({ children }: MyComponentProps) {
     setItems(verifiedResults);
   }, []);
 
+  const fetchMovie = useCallback(async (id: number) => {
+    const res = await axios.get(`/api/movie/${id}`);
+    const verifiedResults = res.data as mediaItem;
+    return verifiedResults;
+  }, []);
+
   useEffect(() => {
-    fetchMovies();
-  }, [fetchMovies]);
+    if (activeTab === "movies") {
+      fetchMovies();
+    } else if (activeTab === "tv") {
+      fetchtvshows();
+    } else if (activeTab === "trending") {
+      fetchTrending();
+    } else if (activeTab === "top_rated") {
+      fetchTopRated();
+    }
+  }, [activeTab, fetchMovies, fetchtvshows, fetchTrending, fetchTopRated]);
 
   return (
     <DataContext.Provider
-      value={{ items, fetchTrending, fetchTopRated, fetchMovies, fetchtvshows }}
+      value={{
+        items,
+        fetchTrending,
+        fetchTopRated,
+        fetchMovies,
+        fetchtvshows,
+        fetchMovie,
+      }}
     >
       {children}
     </DataContext.Provider>

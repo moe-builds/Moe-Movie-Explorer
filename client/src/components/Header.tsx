@@ -10,12 +10,12 @@ import {
   Star,
 } from "lucide-react";
 import { useDataContext } from "../contexts/DataContext";
-import { useState } from "react";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export function Header() {
   const { fetchTrending, fetchTopRated, fetchMovies, fetchtvshows } =
     useDataContext();
-  const [activeTab, setActiveTab] = useState("movies");
+  const [activeTab, setActiveTab] = useLocalStorage("tabs", "movies");
 
   const tabs = [
     { id: "movies", label: "Movies", icon: <Film className="mr-1.5" /> },

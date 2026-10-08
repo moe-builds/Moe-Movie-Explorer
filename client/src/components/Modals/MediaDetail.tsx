@@ -1,9 +1,25 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Play, X, Bookmark, Star } from "lucide-react";
+import { useDataContext, type mediaItem } from "../../contexts/DataContext";
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 export function MediaDetail() {
   const navigate = useNavigate();
-  // const [id] = useParams();
+  const { id } = useParams();
+
+  const { fetchMovie } = useDataContext();
+
+  const [media, setMedia] = useState<mediaItem | null>(null);
+
+  useEffect(() => {
+    async function loadData() {
+      setMedia(await fetchMovie(Number(id)));
+    }
+    loadData();
+  }, [id, fetchMovie]);
+
+  if (media == null) return;
 
   return (
     <div
@@ -59,7 +75,7 @@ export function MediaDetail() {
                   id="modal-type"
                   className="px-2.5 py-1 rounded-md text-xs font-bold bg-indigo-600 text-white uppercase tracking-wider"
                 >
-                  Movie
+                  {media.media_type}
                 </span>
                 {/* Rating Badge */}
                 <span
@@ -74,22 +90,28 @@ export function MediaDetail() {
                   id="modal-year"
                   className="text-xs font-medium text-slate-300 bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700"
                 >
-                  2023
+                  {media.media_type === "movie"
+                    ? dayjs(media.release_date).format("YYYY")
+                    : dayjs(media.first_air_date).format("YYYY")}
                 </span>
                 {/* Duration Badge */}
-                <span
-                  id="modal-duration"
-                  className="text-xs font-medium text-slate-300 bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700"
-                >
-                  2h 49m
-                </span>
+
+                {media.media_type === "movie" && (
+                  <span
+                    id="modal-duration"
+                    className="text-xs font-medium text-slate-300 bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700"
+                  >
+                    {Math.floor(media.runtime! / 60)} h {media.runtime! % 60}{" "}
+                    min
+                  </span>
+                )}
               </div>
               {/* Modal Title */}
               <h2
                 id="modal-title"
                 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight"
               >
-                Interstellar
+                {media.media_type === "movie" ? media.title : media.name}
               </h2>
             </div>
 

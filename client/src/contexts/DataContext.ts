@@ -21,6 +21,7 @@ interface MovieItem extends BaseMediaItem {
   original_title: string;
   release_date: string;
   video: boolean;
+  runtime?: number;
 
   // Explicitly ensure TV fields do not accidentally conflict
   name?: never;
@@ -53,6 +54,7 @@ interface DataContextType {
   fetchTopRated: () => void;
   fetchMovies: () => void;
   fetchtvshows: () => void;
+  fetchMovie: (id: number) => mediaItem;
 }
 export const DataContext = createContext<DataContextType | null>(null);
 

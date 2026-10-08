@@ -16,7 +16,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Search and discover
+// Search
 app.get("/api/search/multi", async (req, res) => {
   const { query } = req.query;
   if (!query) {
@@ -77,6 +77,7 @@ app.get("/api/movie/:id", async (req, res) => {
   }
 });
 
+// Get the videos that belong to a movie.
 app.get("/api/movie/videos/:id", async (req, res) => {
   const { id } = req.params;
 

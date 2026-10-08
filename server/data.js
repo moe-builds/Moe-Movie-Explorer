@@ -199,7 +199,7 @@ async function getMovie(id) {
   try {
     const response = await axios(options);
 
-    return response.data;
+    return { ...response.data, media_type: "movie" };
   } catch (error) {
     console.error("Error fetching movie data:", error.message);
   }
