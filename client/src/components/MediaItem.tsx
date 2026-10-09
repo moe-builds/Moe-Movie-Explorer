@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
-import { type mediaItem } from "../contexts/DataContext";
+import { useDataContext, type mediaItem } from "../contexts/DataContext";
 import { Bookmark } from "lucide-react";
 import { useWatchList } from "../contexts/WatchListContext";
 
@@ -11,6 +11,8 @@ export function MediaItem({ item }: { item: mediaItem }) {
   const [isSaved, setIsSaved] = useState(false);
 
   const { addToWatchList, removeFromWatchList } = useWatchList();
+
+  const { TV_GENRES, MOVIE_GENRES } = useDataContext();
 
   return (
     <div
@@ -62,7 +64,10 @@ export function MediaItem({ item }: { item: mediaItem }) {
             {item.media_type === "movie"
               ? dayjs(item.release_date).format("YYYY")
               : dayjs(item.first_air_date).format("YYYY")}{" "}
-            • {item.genre_ids[0] || "Drama"}
+            •{" "}
+            {item.media_type === "movie"
+              ? MOVIE_GENRES[item.genre_ids[0]].name
+              : TV_GENRES[item.genre_ids[0]].name || "Drama"}
           </div>
           <h3 className="font-bold text-white text-base leading-snug group-hover:text-indigo-400 transition-colors line-clamp-1">
             {item.media_type === "movie" ? item.title : item.name}

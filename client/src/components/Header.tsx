@@ -12,13 +12,19 @@ import {
 import { useDataContext } from "../contexts/DataContext";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useWatchList } from "../contexts/WatchListContext";
+import { useEffect, useState, type ChangeEvent } from "react";
+import { useDebounce } from "../hooks/useDebounce";
+import axios from "axios";
 
 export function Header() {
+  const [activeTab, setActiveTab] = useLocalStorage("tabs", "movies");
+  const [query, setQuery] = useState("");
+
   const { fetchTrending, fetchTopRated, fetchMovies, fetchtvshows, setItems } =
     useDataContext();
-  const [activeTab, setActiveTab] = useLocalStorage("tabs", "movies");
-
   const { items } = useWatchList();
+
+  const debouncedValue = useDebounce(query);
 
   const tabs = [
     { id: "movies", label: "Movies", icon: <Film className="mr-1.5" /> },
@@ -35,6 +41,32 @@ export function Header() {
     },
   ];
 
+  const handleSearch = async (
+    event: ChangeEvent<HTMLInputElement, HTMLInputElement>,
+  ) => {
+    setQuery(event.target.value);
+  };
+
+  useEffect(() => {
+    if (!debouncedValue.trim()) {
+      fetchMovies();
+      return;
+    }
+
+    async function fetchSearch() {
+      try {
+        const res = await axios.get(
+          `/api/search/multi?query=${debouncedValue}`,
+        );
+        console.log(res.data);
+        setItems(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchSearch();
+  }, [debouncedValue]);
+
   return (
     <header className="sticky top-0 z-40 glass-panel border-b border-slate-800/80 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,10 +81,10 @@ export function Header() {
             </div>
             <div>
               <span className="text-2xl font-extrabold bg-gradient-to-r from-white via-slate-200 to-indigo-400 bg-clip-text text-transparent tracking-tight">
-                CineStream
+                Moe Movie Explorer
               </span>
               <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-semibold border border-indigo-500/30 ml-2 hidden sm:inline-block">
-                v2.5
+                v1.0
               </span>
             </div>
           </div>
@@ -64,9 +96,10 @@ export function Header() {
 
               <input
                 type="text"
-                id="search-input"
                 placeholder="Search movies, TV series, directors..."
                 className="w-full pl-10 pr-10 py-2.5 bg-slate-900/90 border border-slate-700/80 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-slate-200 placeholder-slate-400 transition-all shadow-inner"
+                value={query}
+                onChange={handleSearch}
               />
               {/* Clear Search Button */}
               <button

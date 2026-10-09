@@ -25,7 +25,7 @@ app.get("/api/search/multi", async (req, res) => {
     return res.status(400).json({ error: "Query parameter is required" });
   }
   try {
-    const data = await searchMulti(query);
+    const data = await searchMulti(query, 1);
     res.json(data);
   } catch (error) {
     console.log("Faild to fetch data");

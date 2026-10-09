@@ -153,7 +153,7 @@ async function tvShows() {
   }
 }
 
-async function searchMulti(query) {
+async function searchMulti(query, page) {
   const url = "https://api.themoviedb.org/3/search/multi";
 
   // const url = `https://api.themoviedb.org/3/search/movie`;
@@ -163,7 +163,7 @@ async function searchMulti(query) {
     url: url,
     params: {
       query,
-      page: 1,
+      page,
       language: "en-US",
     },
     headers: {
@@ -175,7 +175,9 @@ async function searchMulti(query) {
   try {
     const response = await axios(options);
 
-    return response.data;
+    return response.data.results.filter((item) =>
+      ["movie", "tv"].includes(item.media_type),
+    );
   } catch (error) {
     console.error("Error fetching movie data:", error.message);
   }

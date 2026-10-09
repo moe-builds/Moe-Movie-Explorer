@@ -5,6 +5,8 @@ import "./App.css";
 import { MediaDetail } from "./components/Modals/MediaDetail";
 import { VideoPlayer } from "./components/Modals/VideoPlayer";
 
+// TODO(3): Search Feature, Caching, Infinite Scroll or Dynamic Pagination.
+
 function App() {
   return (
     <>

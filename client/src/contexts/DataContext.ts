@@ -53,6 +53,8 @@ interface TVItem extends BaseMediaItem {
 // 4. Combine them into the final mediaItem type
 export type mediaItem = MovieItem | TVItem;
 
+type genre = { name: string };
+
 interface DataContextType {
   items: mediaItem[];
   setItems: Dispatch<SetStateAction<mediaItem[]>>;
@@ -100,6 +102,47 @@ interface DataContextType {
     id: string;
     published_at: string;
   }>;
+  MOVIE_GENRES: {
+    [key: number]: genre;
+    28: genre;
+    12: genre;
+    16: genre;
+    35: genre;
+    80: genre;
+    99: genre;
+    18: genre;
+    10751: genre;
+    14: genre;
+    36: genre;
+    27: genre;
+    10402: genre;
+    9648: genre;
+    10749: genre;
+    878: genre;
+    10770: genre;
+    53: genre;
+    10752: genre;
+    37: genre;
+  };
+  TV_GENRES: {
+    [key: number]: genre;
+    10759: genre;
+    16: genre;
+    35: genre;
+    80: genre;
+    99: genre;
+    18: genre;
+    10751: genre;
+    10762: genre;
+    9648: genre;
+    10763: genre;
+    10764: genre;
+    10765: genre;
+    10766: genre;
+    10767: genre;
+    10768: genre;
+    37: genre;
+  };
 }
 export const DataContext = createContext<DataContextType | null>(null);
 
