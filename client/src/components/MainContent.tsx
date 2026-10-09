@@ -3,9 +3,41 @@ import { Sliders, ChevronDown, RotateCcw } from "lucide-react";
 import { NoMediaFallbackUI } from "./NoMediaFallbackUI";
 import { useDataContext } from "../contexts/DataContext";
 import { type mediaItem } from "../contexts/DataContext";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function MainContent() {
   const { items } = useDataContext();
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // This is your callback ref! It executes automatically whenever the target element mounts/unmounts
+
+  const lastItemRef = useCallback((node: HTMLDivElement | null) => {
+    // 1. Clean up the previous observer instance
+    if (observerRef.current) observerRef.current.disconnect();
+
+    // 2. If the new node exists, attach a fresh observer to it
+    if (node) {
+      observerRef.current = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            console.log("Last item visible! Fetching next page...");
+            // loadMore();
+          }
+          setIsVisible(entry.isIntersecting);
+        },
+        { threshold: 0.1 },
+      );
+
+      observerRef.current.observe(node);
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(isVisible);
+  }, [isVisible]);
 
   return (
     <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -80,8 +112,14 @@ export function MainContent() {
           id="media-grid"
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6"
         >
-          {items.map((item: mediaItem) => {
-            return <MediaItem key={item.id} item={item} />;
+          {items.map((item: mediaItem, index) => {
+            return (
+              <MediaItem
+                ref={index === items.length - 1 ? lastItemRef : undefined}
+                key={item.id}
+                item={item}
+              />
+            );
           })}
         </section>
       ) : (

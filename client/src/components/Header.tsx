@@ -50,6 +50,7 @@ export function Header() {
   useEffect(() => {
     if (!debouncedValue.trim()) {
       fetchMovies();
+      setActiveTab("movies");
       return;
     }
 
@@ -58,14 +59,13 @@ export function Header() {
         const res = await axios.get(
           `/api/search/multi?query=${debouncedValue}`,
         );
-        console.log(res.data);
         setItems(res.data);
       } catch (error) {
         console.log(error);
       }
     }
     fetchSearch();
-  }, [debouncedValue]);
+  }, [debouncedValue, fetchMovies, setActiveTab, setItems]);
 
   return (
     <header className="sticky top-0 z-40 glass-panel border-b border-slate-800/80 transition-colors duration-300">

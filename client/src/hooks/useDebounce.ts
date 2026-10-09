@@ -4,7 +4,13 @@ export function useDebounce(value: string) {
   const [debouncedValue, setDebouncedValue] = useState("");
 
   useEffect(() => {
-    if (!value) return;
+    if (!value) {
+      const setState = () => {
+        setDebouncedValue(value);
+      };
+      setState();
+      return;
+    }
 
     const timer = setTimeout(() => {
       setDebouncedValue(value);

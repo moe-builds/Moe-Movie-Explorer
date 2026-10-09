@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type Ref } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -6,7 +6,13 @@ import { useDataContext, type mediaItem } from "../contexts/DataContext";
 import { Bookmark } from "lucide-react";
 import { useWatchList } from "../contexts/WatchListContext";
 
-export function MediaItem({ item }: { item: mediaItem }) {
+export function MediaItem({
+  item,
+  ref,
+}: {
+  item: mediaItem;
+  ref?: Ref<HTMLDivElement>;
+}) {
   const navigate = useNavigate();
   const [isSaved, setIsSaved] = useState(false);
 
@@ -16,6 +22,7 @@ export function MediaItem({ item }: { item: mediaItem }) {
 
   return (
     <div
+      ref={ref}
       className="group relative bg-slate-900 rounded-2xl overflow-hidden border border-slate-800/80 hover:border-slate-700 hover:shadow-2xl hover:shadow-indigo-500/15 transition-all duration-300 flex flex-col cursor-pointer transform hover:-translate-y-1.5"
       onClick={() => {
         navigate(`media/${item.media_type}/${item.id}`);
@@ -66,8 +73,8 @@ export function MediaItem({ item }: { item: mediaItem }) {
               : dayjs(item.first_air_date).format("YYYY")}{" "}
             •{" "}
             {item.media_type === "movie"
-              ? MOVIE_GENRES[item.genre_ids[0]].name
-              : TV_GENRES[item.genre_ids[0]].name || "Drama"}
+              ? MOVIE_GENRES[item.genre_ids[0]]?.name
+              : TV_GENRES[item.genre_ids[0]]?.name || "Drama"}
           </div>
           <h3 className="font-bold text-white text-base leading-snug group-hover:text-indigo-400 transition-colors line-clamp-1">
             {item.media_type === "movie" ? item.title : item.name}
