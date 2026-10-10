@@ -10,21 +10,26 @@ import {
   Star,
 } from "lucide-react";
 import { useDataContext } from "../contexts/DataContext";
-import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useWatchList } from "../contexts/WatchListContext";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useEffect, type ChangeEvent } from "react";
 import { useDebounce } from "../hooks/useDebounce";
-import axios from "axios";
 
 export function Header() {
-  const [activeTab, setActiveTab] = useLocalStorage("tabs", "movies");
-  const [query, setQuery] = useState("");
-
-  const { fetchTrending, fetchTopRated, fetchMovies, fetchtvshows, setItems } =
-    useDataContext();
+  const {
+    fetchTrending,
+    fetchTopRated,
+    fetchMovies,
+    fetchtvshows,
+    setItems,
+    activeTab,
+    setActiveTab,
+    fetchSearch,
+    inputSearcQquery,
+    setInputSearcQquery,
+  } = useDataContext();
   const { items } = useWatchList();
 
-  const debouncedValue = useDebounce(query);
+  const debouncedValue = useDebounce(inputSearcQquery);
 
   const tabs = [
     { id: "movies", label: "Movies", icon: <Film className="mr-1.5" /> },
@@ -44,7 +49,7 @@ export function Header() {
   const handleSearch = async (
     event: ChangeEvent<HTMLInputElement, HTMLInputElement>,
   ) => {
-    setQuery(event.target.value);
+    setInputSearcQquery(event.target.value);
   };
 
   useEffect(() => {
@@ -54,18 +59,8 @@ export function Header() {
       return;
     }
 
-    async function fetchSearch() {
-      try {
-        const res = await axios.get(
-          `/api/search/multi?query=${debouncedValue}`,
-        );
-        setItems(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchSearch();
-  }, [debouncedValue, fetchMovies, setActiveTab, setItems]);
+    fetchSearch(debouncedValue, false, 1);
+  }, [debouncedValue, fetchMovies, setActiveTab, fetchSearch]);
 
   return (
     <header className="sticky top-0 z-40 glass-panel border-b border-slate-800/80 transition-colors duration-300">
@@ -98,7 +93,7 @@ export function Header() {
                 type="text"
                 placeholder="Search movies, TV series, directors..."
                 className="w-full pl-10 pr-10 py-2.5 bg-slate-900/90 border border-slate-700/80 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-slate-200 placeholder-slate-400 transition-all shadow-inner"
-                value={query}
+                value={inputSearcQquery}
                 onChange={handleSearch}
               />
               {/* Clear Search Button */}

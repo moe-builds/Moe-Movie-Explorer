@@ -5,7 +5,7 @@ import "./App.css";
 import { MediaDetail } from "./components/Modals/MediaDetail";
 import { VideoPlayer } from "./components/Modals/VideoPlayer";
 
-// TODO(3): Caching, Infinite Scroll or Dynamic Pagination.
+// TODOs: make search results in a small window below the search bar unless the user clicks Enter the show him the result, Caching.
 
 function App() {
   return (

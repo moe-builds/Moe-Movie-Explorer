@@ -120,6 +120,11 @@ const TV_GENRES = {
 export function DataProvider({ children }: MyComponentProps) {
   const [items, setItems] = useState<mediaItem[]>([]);
   const [activeTab, setActiveTab] = useLocalStorage("tabs", "movies");
+  const [inputSearcQquery, setInputSearcQquery] = useState("");
+  const [pagination, setPagination] = useState({
+    total: 1,
+    current: 1,
+  });
 
   const fetchTrending = useCallback(async () => {
     const res = await axios.get("/api/trending");
@@ -170,23 +175,49 @@ export function DataProvider({ children }: MyComponentProps) {
     }
   }, []);
 
-  const fetchMovieTrailer = async (id: number) => {
+  const fetchMovieTrailer = useCallback(async (id: number) => {
     try {
       const res = await axios.get(`/api/movie/videos/${id}`);
       return res.data;
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
-  const fetchTvTrailer = async (id: number) => {
+  const fetchTvTrailer = useCallback(async (id: number) => {
     try {
       const res = await axios.get(`/api/tv/videos/${id}`);
       return res.data;
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
+
+  const fetchSearch = useCallback(
+    async (query: string, appeand: boolean = false, page: number) => {
+      try {
+        const res = await axios.get(
+          `/api/search/multi?query=${query}&page=${page}`,
+        );
+
+        setPagination((prev) => {
+          if (prev.current < res.data.total_pages) {
+            return { total: res.data.total_pages, current: prev.current + 1 };
+          } else {
+            return { total: 1, current: 1 };
+          }
+        });
+        if (appeand) {
+          setItems((prev) => [...prev, ...res.data.results]);
+        } else {
+          setItems(res.data.results);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     if (activeTab === "movies") {
@@ -215,8 +246,15 @@ export function DataProvider({ children }: MyComponentProps) {
         fetchMovieCredits,
         fetchMovieTrailer,
         fetchTvTrailer,
+        fetchSearch,
+        activeTab,
+        setActiveTab,
         MOVIE_GENRES,
         TV_GENRES,
+        inputSearcQquery,
+        setInputSearcQquery,
+        pagination,
+        setPagination,
       }}
     >
       {children}

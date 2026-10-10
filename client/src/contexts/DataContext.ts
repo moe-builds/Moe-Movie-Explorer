@@ -102,6 +102,7 @@ interface DataContextType {
     id: string;
     published_at: string;
   }>;
+  fetchSearch: (query: string, appeand: boolean, page: number) => Promise<void>;
   MOVIE_GENRES: {
     [key: number]: genre;
     28: genre;
@@ -143,6 +144,13 @@ interface DataContextType {
     10768: genre;
     37: genre;
   };
+  activeTab: string;
+  setActiveTab: Dispatch<SetStateAction<string>>;
+  inputSearcQquery: string;
+  setInputSearcQquery: Dispatch<SetStateAction<string>>;
+
+  pagination: { total: number; current: number };
+  setPagination: Dispatch<SetStateAction<{ total: number; current: number }>>;
 }
 export const DataContext = createContext<DataContextType | null>(null);
 

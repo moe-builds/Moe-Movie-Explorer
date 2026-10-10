@@ -175,9 +175,14 @@ async function searchMulti(query, page) {
   try {
     const response = await axios(options);
 
-    return response.data.results.filter((item) =>
-      ["movie", "tv"].includes(item.media_type),
-    );
+    return {
+      ...response.data,
+      results: response.data.results.filter((item) =>
+        ["movie", "tv"].includes(item.media_type),
+      ),
+    };
+
+    return;
   } catch (error) {
     console.error("Error fetching movie data:", error.message);
   }

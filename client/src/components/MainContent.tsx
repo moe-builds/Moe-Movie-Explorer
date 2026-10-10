@@ -6,7 +6,7 @@ import { type mediaItem } from "../contexts/DataContext";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export function MainContent() {
-  const { items } = useDataContext();
+  const { items, fetchSearch, inputSearcQquery, pagination } = useDataContext();
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -22,10 +22,6 @@ export function MainContent() {
     if (node) {
       observerRef.current = new IntersectionObserver(
         ([entry]) => {
-          if (entry.isIntersecting) {
-            console.log("Last item visible! Fetching next page...");
-            // loadMore();
-          }
           setIsVisible(entry.isIntersecting);
         },
         { threshold: 0.1 },
@@ -36,8 +32,10 @@ export function MainContent() {
   }, []);
 
   useEffect(() => {
-    console.log(isVisible);
-  }, [isVisible]);
+    if (isVisible) {
+      fetchSearch(inputSearcQquery, true, pagination.current);
+    }
+  }, [isVisible, fetchSearch, inputSearcQquery, pagination]);
 
   return (
     <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
